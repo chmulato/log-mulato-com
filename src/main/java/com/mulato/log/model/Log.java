@@ -1,8 +1,6 @@
 package com.mulato.log.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +16,10 @@ public class Log {
 	private Long id;
 	
 	@NotNull(message = "The date/hour is required!")
-	private String startDate;
+	private String date;
+	
+	@NotNull(message = "The date/hour is required!")
+	private Timestamp startDate;
 	
 	@NotNull(message = "The IP number is required!")
 	private String ip;
@@ -26,7 +27,8 @@ public class Log {
 	@NotNull(message = "The GET is required!")
 	private String getHttp;
 	
-	private Integer state;
+	@NotNull
+	private Integer status;
 	
 	@NotNull(message = "The type of the client is required!")
 	private String client;
@@ -43,11 +45,19 @@ public class Log {
 		this.id = id;
 	}
 
-	public String getStartDate() {
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public Timestamp getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Timestamp startDate) {
 		this.startDate = startDate;
 	}
 
@@ -67,12 +77,12 @@ public class Log {
 		this.getHttp = getHttp;
 	}
 
-	public Integer getState() {
-		return state;
+	public Integer getStatus() {
+		return status;
 	}
 
-	public void setState(Integer state) {
-		this.state = state;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getClient() {
@@ -81,20 +91,6 @@ public class Log {
 
 	public void setClient(String client) {
 		this.client = client;
-	}
-	
-	public Date getDate() {
-		Date date = null;
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.mmm");
-	    String dateInString = getStartDate();
-	    try {
-	        date = formatter.parse(dateInString);
-	        System.out.println(date);
-	        System.out.println(formatter.format(date));
-	    } catch (ParseException ex) {
-	        ex.printStackTrace();
-	    }
-		return date;
 	}
 
 }

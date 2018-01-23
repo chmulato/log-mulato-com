@@ -27,7 +27,7 @@ public class LogResources {
 	
 	@RequestMapping(value = "file", method = RequestMethod.GET)
 	public List<Log> index() {
-		List<Log> result = null;
+		List<Log> listLog = null;
 		Resource resource = loader.getResource("classpath:static/access.log");
 		try {
 			List<String> lines = Files.readAllLines(Paths.get(resource.getURI()), StandardCharsets.UTF_8);
@@ -40,19 +40,21 @@ public class LogResources {
 					count = count + 1;
 					Log log = new Log();
 					log.setId(Long.valueOf(count));
-					log.setStartDate(info[0]);
+					log.setDate(info[0]);
+					log.setStartDate(logService.converterTimestamp(info[0]));
 					log.setIp(info[1]);
 					log.setGetHttp(info[2]);
-					log.setState(Integer.valueOf(info[3]).intValue());
+					log.setStatus(Integer.valueOf(info[3]).intValue());
 					log.setClient(info[4]);
-					//logService.save(log);
+					logService.save(log);
 				}
 			} 
-			result = logService.listAll();
+			listLog = logService.listAll();
+			listLog = logService.orderList(listLog);
         } catch (Exception e) {
             e.printStackTrace();
         }
-		return result;
+		return listLog;
 	}
 
 }
