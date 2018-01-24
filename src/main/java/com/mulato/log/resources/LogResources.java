@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mulato.log.model.IpCounter;
 import com.mulato.log.model.Log;
 import com.mulato.log.service.LogService;
 
@@ -73,6 +74,14 @@ public class LogResources {
 
 		counting.forEach((k,v)->System.out.println("pi : " + k + " threshold : " + v));
 
+		List<IpCounter> ipList =logService.getCounter(beginDate, endDate);
+
+		ipList = logService.orderListIp(ipList);
+
+		for (IpCounter ipCounter : ipList) {
+			System.out.println("IP: " + ipCounter.getIp() + " Total: " + ipCounter.getTotal());
+		}
+		
 		return listLog;
 	}
 

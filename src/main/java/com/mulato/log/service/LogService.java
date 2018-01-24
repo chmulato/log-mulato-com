@@ -10,7 +10,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mulato.log.model.IpCounter;
 import com.mulato.log.model.Log;
+import com.mulato.log.repository.IpCounterRepository;
 import com.mulato.log.repository.LogRepository;
 
 @Service
@@ -20,6 +22,9 @@ public class LogService {
 
 	@Autowired
 	private LogRepository logRepository;
+
+	@Autowired
+	private IpCounterRepository ipCounterRepository;
 
 	public List<Log> listAll() {
 		return logRepository.findAll();
@@ -75,5 +80,19 @@ public class LogService {
 	public List<Log> getListAllOrderByIpAndStartDate() {
 		return logRepository.getListAll();
 	}
+	
+	public List<IpCounter> getCounter(Date beginDate, Date endDate) {
+		Timestamp beginTimestamp = converterTimestamp(beginDate);
+		Timestamp endTimestamp = converterTimestamp(endDate);
+		return ipCounterRepository.counterIpByDatePeriod(beginTimestamp, endTimestamp);
+	}
+	
+	public List<IpCounter> orderListIp(List<IpCounter> list) {
+		List<IpCounter> orders = list;
+		Comparator<IpCounter> comparator = (o1, o2) -> o1.getTotalText().compareTo(o2.getTotalText());
+		list.sort(comparator);
+		return orders;
+	}
+	
 }	
 	

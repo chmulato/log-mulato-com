@@ -15,5 +15,5 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 	
 	@Query(value="SELECT l FROM Log l ORDER BY l.ip, l.startDate")
 	List<Log> getListAll();
-
+	
 }
