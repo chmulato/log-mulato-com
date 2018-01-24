@@ -11,7 +11,7 @@ public class IpCounter {
 
 	private String ip;
 	
-	private long total;
+	private Long total;
 
 	public IpCounter() {
 		super();
@@ -39,16 +39,12 @@ public class IpCounter {
 		this.ip = ip;
 	}
 
-	public long getTotal() {
+	public Long getTotal() {
 		return total;
 	}
 
-	public void setTotal(long total) {
+	public void setTotal(Long total) {
 		this.total = total;
-	}
-	
-	public String getTotalText() {
-		return String.valueOf(total);
 	}
 
 }

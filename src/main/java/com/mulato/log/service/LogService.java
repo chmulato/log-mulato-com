@@ -89,8 +89,8 @@ public class LogService {
 	
 	public List<IpCounter> orderListIp(List<IpCounter> list) {
 		List<IpCounter> orders = list;
-		Comparator<IpCounter> comparator = (o1, o2) -> o1.getTotalText().compareTo(o2.getTotalText());
-		list.sort(comparator);
+		Comparator<IpCounter> comparator = (o1, o2) -> o1.getTotal().compareTo(o2.getTotal());
+		list.sort(comparator.reversed());
 		return orders;
 	}
 	

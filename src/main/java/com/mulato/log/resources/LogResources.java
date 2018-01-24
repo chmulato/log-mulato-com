@@ -72,7 +72,7 @@ public class LogResources {
 		
 		Map<String, Long> counting = listLog.stream().collect(Collectors.groupingBy(Log::getIp, Collectors.counting()));
 
-		counting.forEach((k,v)->System.out.println("pi : " + k + " threshold : " + v));
+		counting.forEach((k,v)->System.out.println("IP: " + k + " Total: " + v));
 
 		List<IpCounter> ipList =logService.getCounter(beginDate, endDate);
 
