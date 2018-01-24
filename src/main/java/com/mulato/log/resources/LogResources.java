@@ -73,11 +73,6 @@ public class LogResources {
 
 		counting.forEach((k,v)->System.out.println("pi : " + k + " threshold : " + v));
 
-		//group by Ip
-        Map<String, List<Log>> groupByIp = listLog.stream().collect(Collectors.groupingBy(Log::getIp));
-
-        System.out.println(groupByIp);
-		
 		return listLog;
 	}
 
