@@ -33,15 +33,29 @@ public class LogService {
 		return logRepository.findOne(log.getId());
 	}
 
-	public Timestamp converterTimestamp(String startDate) {
+	public Timestamp converterTimestamp(String strDate) {
 		Timestamp result = null;
 		try {
-	        Date data = formatter.parse(startDate);
-	        result = new java.sql.Timestamp(data.getTime());
+	        Date date = formatter.parse(strDate);
+	        result = new java.sql.Timestamp(date.getTime());
 	    } catch (ParseException ex) {
 	        ex.printStackTrace();
 	    }
 		return result;
+	}
+
+	public Date converterDate(String strDate) {
+		Date result = null;
+		try {
+	        result = formatter.parse(strDate);
+	    } catch (ParseException ex) {
+	        ex.printStackTrace();
+	    }
+		return result;
+	}
+
+	public Timestamp converterTimestamp(Date date) {
+		return new java.sql.Timestamp(date.getTime());
 	}
 	
 	public List<Log> orderList(List<Log> list) {
@@ -50,6 +64,16 @@ public class LogService {
 		comparator.thenComparing((o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
 		orders.sort(comparator);
 		return orders;
+	}
+	
+	public List<Log> getListByPediod(Date beginDate, Date endDate) {
+		Timestamp beginTimestamp = converterTimestamp(beginDate);
+		Timestamp endTimestamp = converterTimestamp(endDate);
+		return logRepository.getListBetweenPeriodOrderByIpAndStartDate(beginTimestamp, endTimestamp);
+	}
+	
+	public List<Log> getListAllOrderByIpAndStartDate() {
+		return logRepository.getListAll();
 	}
 }	
 	

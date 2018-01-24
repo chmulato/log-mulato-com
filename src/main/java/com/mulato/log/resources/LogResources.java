@@ -3,7 +3,12 @@ package com.mulato.log.resources;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -46,7 +51,10 @@ public class LogResources {
 					log.setGetHttp(info[2]);
 					log.setStatus(Integer.valueOf(info[3]).intValue());
 					log.setClient(info[4]);
-					logService.save(log);
+					//logService.save(log);
+					if (listLog == null)
+						listLog = new ArrayList<>();
+					listLog.add(log);
 				}
 			} 
 			listLog = logService.listAll();
@@ -54,6 +62,22 @@ public class LogResources {
         } catch (Exception e) {
             e.printStackTrace();
         }
+		Date beginDate = logService.converterDate("2017-01-01 00:00:00.000");
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(beginDate);
+	    cal.add(Calendar.HOUR_OF_DAY, 1);
+		Date endDate = cal.getTime();
+		listLog = logService.getListByPediod(beginDate, endDate);	
+		
+		Map<String, Long> counting = listLog.stream().collect(Collectors.groupingBy(Log::getIp, Collectors.counting()));
+
+		counting.forEach((k,v)->System.out.println("pi : " + k + " threshold : " + v));
+
+		//group by Ip
+        Map<String, List<Log>> groupByIp = listLog.stream().collect(Collectors.groupingBy(Log::getIp));
+
+        System.out.println(groupByIp);
+		
 		return listLog;
 	}
 
